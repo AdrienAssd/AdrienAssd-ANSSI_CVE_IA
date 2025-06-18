@@ -6,31 +6,28 @@ Ce projet automatise la collecte, l’enrichissement et l’analyse des bulletin
 
 ---
 
-## Fonctions principales
+## Fonctionnalités principales
 
-### 1. `recuperer_bulletins_rss(url)`
-Récupère tous les bulletins ANSSI depuis un flux RSS.
+- **Collecte automatique des bulletins ANSSI**  
+  Le script récupère les nouveaux bulletins publiés sur le site de l’ANSSI via le flux RSS, en ne traitant que ceux qui sont plus récents que la dernière entrée du fichier CSV.
 
-### 2. `recuperer_nouveaux_bulletins(url, anciens_liens)`
-Récupère uniquement les bulletins dont le lien n’est pas déjà connu.
+- **Extraction des identifiants CVE**  
+  Pour chaque bulletin, le script extrait les identifiants CVE associés, soit via le JSON du bulletin, soit par recherche dans le texte.
 
-### 3. `recuperer_bulletins_apres_date(url, date_limite)`
-Récupère les bulletins publiés après une date donnée (prend en compte heure/minute/seconde).
+- **Enrichissement des vulnérabilités**  
+  Pour chaque CVE trouvé, le script interroge l’API MITRE pour obtenir la description, le score CVSS, la sévérité, le type CWE, les produits affectés, etc. Il interroge aussi l’API EPSS pour obtenir la probabilité d’exploitation.
 
-### 4. `extraire_cves_depuis_bulletin(lien_bulletin)`
-Extrait tous les identifiants CVE référencés dans un bulletin ANSSI (via son URL JSON).
+- **Consolidation des données**  
+  Toutes les informations extraites et enrichies sont fusionnées dans un tableau (DataFrame pandas) puis sauvegardées dans un fichier CSV, sans doublons.
 
-### 5. `extraire_infos_cve(cve_ids)`
-Pour chaque CVE, récupère la description, le score CVSS, la sévérité, le type CWE, les produits affectés, etc.
+- **Gestion des valeurs manquantes**  
+  Les champs non disponibles sont remplacés par la mention "de type valeur manquante" pour faciliter l’analyse.
 
-### 6. `extraire_epss_pour_cves(cve_ids)`
-Récupère le score EPSS (probabilité d’exploitation) pour chaque CVE.
+- **Visualisation et interprétation**  
+  Le script propose des exemples de visualisations (histogrammes, camemberts, courbes, nuages de points, etc.) pour analyser la gravité, la fréquence, la probabilité d’exploitation et la répartition des vulnérabilités.
 
-### 7. Consolidation des données
-Fusionne toutes les informations extraites et enrichies dans un DataFrame puis un CSV.
-
-### 8. Visualisation et interprétation
-Génère des graphiques (histogrammes, camemberts, courbes, heatmaps, etc.) pour analyser et prioriser les vulnérabilités.
+- **Notification par email (optionnel)**  
+  Le projet peut envoyer des alertes par email selon des critères définis, en utilisant les identifiants stockés dans un fichier `.env` (voir ci-dessous).
 
 ---
 
