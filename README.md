@@ -33,8 +33,8 @@ Ce projet Jupyter Notebook permet d’automatiser la collecte, l’enrichissemen
 Pour la partie notification ou envoi d’alertes par email (optionnelle), **il faut créer un fichier `.env`** à la racine du projet contenant vos identifiants de messagerie :
 
 ```
-EMAIL=ton.email@exemple.com
-MDP=ton_mot_de_passe
+EMAIL_ADDRESS=ton.email@exemple.com
+EMAIL_PASSWORD=ton_mot_de_passe
 ```
 
 Ces informations sont utilisées pour sécuriser l’envoi d’emails sans exposer vos identifiants dans le code source.
