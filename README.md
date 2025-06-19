@@ -2,38 +2,35 @@
 
 ## Description
 
-Ce projet automatise la collecte, l’enrichissement et l’analyse des bulletins de vulnérabilités publiés par l’ANSSI. Il extrait les informations clés, enrichit les données avec des sources externes (CVE, EPSS), consolide le tout dans un fichier CSV, puis propose des visualisations pour l’interprétation et la priorisation des risques.
+Ce projet Jupyter Notebook permet d’automatiser la collecte, l’enrichissement et l’analyse des bulletins de vulnérabilités publiés par l’ANSSI. Il extrait les informations clés, enrichit les données avec des sources externes (CVE, EPSS), consolide le tout dans un fichier CSV, puis propose des visualisations pour l’interprétation et la priorisation des risques.
 
 ---
 
-## Fonctionnalités principales
+## Fonctionnalités du Notebook
 
-- **Collecte automatique des bulletins ANSSI**  
-  Le script récupère les nouveaux bulletins publiés sur le site de l’ANSSI via le flux RSS, en ne traitant que ceux qui sont plus récents que la dernière entrée du fichier CSV.
+### 1. Récupération des bulletins ANSSI
+- Utilisation de la bibliothèque `feedparser` pour lire le flux RSS des bulletins ANSSI.
+- Extraction des titres, descriptions, liens et dates de publication.
 
-- **Extraction des identifiants CVE**  
-  Pour chaque bulletin, le script extrait les identifiants CVE associés, soit via le JSON du bulletin, soit par recherche dans le texte.
+### 2. Extraction des identifiants CVE
+- Pour chaque bulletin, extraction des identifiants CVE référencés via l’URL JSON du bulletin et par recherche avec une expression régulière.
 
-- **Enrichissement des vulnérabilités**  
-  Pour chaque CVE trouvé, le script interroge l’API MITRE pour obtenir la description, le score CVSS, la sévérité, le type CWE, les produits affectés, etc. Il interroge aussi l’API EPSS pour obtenir la probabilité d’exploitation.
+### 3. Enrichissement des vulnérabilités
+- Pour chaque CVE trouvé, interrogation de l’API MITRE pour obtenir la description, le score CVSS, la sévérité, le type CWE, les produits affectés, etc.
+- Récupération du score EPSS (probabilité d’exploitation) via l’API FIRST.
 
-- **Consolidation des données**  
-  Toutes les informations extraites et enrichies sont fusionnées dans un tableau (DataFrame pandas) puis sauvegardées dans un fichier CSV, sans doublons.
+### 4. Consolidation des données
+- Fusion de toutes les informations extraites et enrichies dans un DataFrame pandas.
+- Ajout des nouvelles données au fichier `data.csv` sans dupliquer les anciennes entrées.
 
-- **Gestion des valeurs manquantes**  
-  Les champs non disponibles sont remplacés par la mention "de type valeur manquante" pour faciliter l’analyse.
-
-- **Visualisation et interprétation**  
-  Le script propose des exemples de visualisations (histogrammes, camemberts, courbes, nuages de points, etc.) pour analyser la gravité, la fréquence, la probabilité d’exploitation et la répartition des vulnérabilités.
-
-- **Notification par email (optionnel)**  
-  Le projet peut envoyer des alertes par email selon des critères définis, en utilisant les identifiants stockés dans un fichier `.env` (voir ci-dessous).
+### 5. Visualisation et interprétation
+- Génération de graphiques (histogrammes, camemberts, courbes, nuages de points, etc.) pour analyser la gravité, la fréquence, la probabilité d’exploitation et la répartition des vulnérabilités à partir du fichier `data.csv`.
 
 ---
 
 ## Fichier `.env` requis
 
-Pour la partie notification ou envoi d’alertes par email, **il faut créer un fichier `.env`** à la racine du projet contenant vos identifiants de messagerie :
+Pour la partie notification ou envoi d’alertes par email (optionnelle), **il faut créer un fichier `.env`** à la racine du projet contenant vos identifiants de messagerie :
 
 ```
 EMAIL=ton.email@exemple.com
@@ -55,17 +52,14 @@ Ces informations sont utilisées pour sécuriser l’envoi d’emails sans expos
 - **EPSS** : Exploit Prediction Scoring System, **score qui estime la probabilité qu’une vulnérabilité soit exploitée dans les 30 prochains jours**. Plus le score EPSS est élevé (proche de 1), plus la vulnérabilité a de chances d’être exploitée rapidement.
 - **DataFrame** : Structure de données tabulaire de la bibliothèque pandas.
 - **Regex** : Expression régulière, utilisée pour extraire des motifs dans du texte.
-- **Heatmap** : Carte de chaleur, graphique montrant la densité ou la corrélation entre deux variables.
-- **Boxplot** : Diagramme en boîte, visualise la dispersion d’une variable.
-- **Nuage de points** : Scatter plot, visualise la relation entre deux variables numériques.
 
 ---
 
-## Utilisation
+## Utilisation du Notebook
 
 1. **Extraction** : Récupère les bulletins et CVE depuis le flux RSS ANSSI.
 2. **Enrichissement** : Pour chaque CVE, récupère les infos détaillées et le score EPSS.
-3. **Consolidation** : Fusionne toutes les données dans un CSV.
+3. **Consolidation** : Fusionne toutes les données dans un CSV, sans doublons.
 4. **Visualisation** : Lance les scripts de visualisation pour interpréter les résultats.
 5. **Notification** : (optionnel) Envoie des alertes par email selon les critères définis, en utilisant les identifiants du fichier `.env`.
 
@@ -76,5 +70,4 @@ Ces informations sont utilisées pour sécuriser l’envoi d’emails sans expos
 - Le projet gère les valeurs manquantes et les champs absents.
 - Les visualisations sont adaptables selon vos besoins.
 - Le CSV peut être enrichi à chaque exécution sans doublons.
-
----
+- Toutes les étapes sont réalisées dans le notebook, étape par étape, pour faciliter la compréhension et la personnalisation.
