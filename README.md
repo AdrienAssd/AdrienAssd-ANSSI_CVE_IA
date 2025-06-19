@@ -70,4 +70,4 @@ Ces informations sont utilisées pour sécuriser l’envoi d’emails sans expos
 - Le projet gère les valeurs manquantes et les champs absents.
 - Les visualisations sont adaptables selon vos besoins.
 - Le CSV peut être enrichi à chaque exécution sans doublons.
-- Toutes les étapes sont réalisées dans le notebook, étape par étape, pour faciliter la compréhension et la personnalisation.
+- Toutes les étapes sont réalisées dans le notebook, étape par étape, pour faciliter la compréhension et la personnalisation. 
